@@ -2,14 +2,12 @@
 import time
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
+
 from sklearn.feature_extraction.text import CountVectorizer
-# importing the naive bayes model class MultinomialNB (NaiveBayes), which works well with count_vectorizers as it expects integer inputs
+from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
-#from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
-# metric model to evaluate the model performance
 from sklearn import metrics
 
 
@@ -38,6 +36,10 @@ print(comments.head())
 print('These are the head of the comments classified as an attack\n')
 print(comments.query('attack')['comment'].head())
 
+
+# features
+X = comments['comment']
+
 # create y which is the outcome label the model has to learn
 y = comments['attack']
 
@@ -54,16 +56,15 @@ training data as X_train, training labels as y_train,
 testing data as X_test and testing labels as y_test
 '''
 
-X_train, X_test, y_train, y_test = train_test_split(comments['comment'], y, test_size=0.33, random_state=53)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=53)
 
 # create count vectorizer that turn the text into a bag-of-words vectors
 # each tokens acts as a feature for the machine learning classification problem
 
+# Specify the hyperparameter space
+
 max_features = (1000, 2500, 5000, 10000)
 alpha_space = np.logspace(0, -5, 6)
-
-# Specify the hyperparameter space
-# char-gram, no tfidf
 
 param_grid = {
     'vect__max_features': max_features,
@@ -81,7 +82,7 @@ pipeline = Pipeline(steps)
 
 load_time = time.time()
 
-# Instantiate the GridSearchCV object: cv
+# Instantiate the GridSearchCV object: cv (12 fold cross validation)
 cv = GridSearchCV(pipeline, param_grid, cv=12)
 
 # Fit to the training set
