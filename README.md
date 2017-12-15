@@ -1,5 +1,8 @@
 # georgetown_capstone
 
+This project talks about: https://meta.wikimedia.org/wiki/Research:Detox/Data_Release
+
+
 You can find the files related to wiki Detox project at: https://figshare.com/articles/Wikipedia_Talk_Labels_Personal_Attacks/4054689
 
 attack: attack_annotated_comments.tsv(55.43 MB)
